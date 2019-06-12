@@ -51,6 +51,7 @@ def deployTo(applicationName, environment, extraArgs = '') {
             helm upgrade --install ${applicationName} \
                 ./chart \
                 --namespace=streaming-services \
+                --values=${applicationName}.yaml \
                 ${extraArgs}
         """.trim())
     }
