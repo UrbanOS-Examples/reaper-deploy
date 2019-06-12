@@ -14,7 +14,7 @@ spec:
   ports:
   - name: metrics
     protocol: TCP
-    port: {{ .Values.reaper.service.port }}
+    port: {{ .Values.service.port }}
     targetPort: reaper
   - name: erlang-vm
     protocol: TCP
@@ -24,4 +24,4 @@ spec:
     protocol: TCP
     port: 4369
     targetPort: 4369
-  type: {{ .Values.reaper.service.type }}
+  type: {{ .Values.service.type }}
