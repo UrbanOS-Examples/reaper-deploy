@@ -4,7 +4,7 @@ replicaCount: 2
 image:
   repository: smartcitiesdata/reaper
   tag: development
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   port: 9092
   type: ClusterIP
