@@ -43,10 +43,10 @@ spec:
         - mountPath: /downloads
           name: download-dir
         env:
-        - name: TO_TOPIC
-          value: {{ .Values.to_topic }}
+        - name: OUTPUT_TOPIC_PREFIX
+          value: {{ .Values.outputTopicPrefix }}
         - name: DLQ_TOPIC
-          value: {{ .Values.dlq_topic }}
+          value: {{ .Values.dlqTopic }}
         - name: KAFKA_BROKERS
           value: {{ .Values.strimzi.kafka.brokers | default (include "kafka.brokerservice" .) }}
         - name: RUN_IN_KUBERNETES
