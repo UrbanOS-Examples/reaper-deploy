@@ -1,5 +1,5 @@
-to_topic: streaming-raw
-dlq_topic: streaming-dead-letters
+outputTopicPrefix: raw
+dlqTopic: streaming-dead-letters
 replicaCount: 2
 image:
   repository: smartcitiesdata/reaper
