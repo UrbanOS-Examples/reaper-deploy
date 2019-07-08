@@ -1,20 +1,12 @@
-replicaCount: 1
-
 image:
   tag: 0.5.2
-
-kafka:
-  pipeline_brokers: streaming-service-kafka-bootstrap.streaming-prime:9092
-  strimziCluster: streaming-service
-  transformed_topic: streaming-transformed
 
 redis:
   host: redis.external-services
 
 resources:
   limits:
-    cpu: 300m
-    memory: 512Mi
+    ephemeral-storage: 50G
   requests:
-    cpu: 100m
-    memory: 512Mi
+    memory: 1Gb
+    ephemeral-storage: 25G
