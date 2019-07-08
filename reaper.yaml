@@ -8,5 +8,5 @@ resources:
   limits:
     ephemeral-storage: 50G
   requests:
-    memory: 1Gb
+    memory: 1G
     ephemeral-storage: 25G
