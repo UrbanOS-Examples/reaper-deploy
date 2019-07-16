@@ -54,6 +54,7 @@ def deployTo(applicationName, environment, extraArgs = '') {
                 --version 0.1.0 \
                 --namespace=streaming-services \
                 --values=${applicationName}.yaml \
+                --set aws.hostedFileBucket=${environment}-hosted-dataset-files \
                 ${extraArgs}
         """.trim())
     }
