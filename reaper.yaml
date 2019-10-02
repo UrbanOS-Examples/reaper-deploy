@@ -9,7 +9,7 @@ redis:
 resources:
   limits:
     ephemeral-storage: 50Gi
-    memory: 2Gi
+    memory: 6Gi
   requests:
     ephemeral-storage: 25Gi
-    memory: 1Gi
+    memory: 6Gi
