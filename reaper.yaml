@@ -11,5 +11,5 @@ resources:
     ephemeral-storage: 50Gi
     memory: 6Gi
   requests:
-    ephemeral-storage: 25Gi
+    ephemeral-storage: 50Gi
     memory: 6Gi
