@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  tag: 0.24.11
+  tag: 0.24.12
 
 redis:
   host: redis.external-services
