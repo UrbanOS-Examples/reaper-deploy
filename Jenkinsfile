@@ -50,7 +50,7 @@ def deployTo(applicationName, environment, extraArgs = '') {
             helm repo add scdp https://datastillery.github.io/charts
             helm repo update
             helm upgrade --install ${applicationName} scdp/${applicationName} \
-                --version 0.3.2 \
+                --version 0.3.3 \
                 --namespace=streaming-services \
                 --values=${applicationName}.yaml \
                 --set aws.hostedFileBucket=${environment}-hosted-dataset-files \
