@@ -17,7 +17,7 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "urban_os" {
+resource "helm_release" "reaper" {
   name = "reaper"
   #repository = "https://Datastillery.github.io/charts"
   # The following line exists to quickly be commented out
