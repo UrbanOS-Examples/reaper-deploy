@@ -5,16 +5,16 @@ terraform {
   }
 }
 
-resource "local_file" "kubeconfig" {
-  filename          = "${path.module}/outputs/kubeconfig"
-  sensitive_content = data.terraform_remote_state.env_remote_state.outputs.eks_cluster_kubeconfig
-}
-
 provider "helm" {
   version = ">= 2.1"
   kubernetes {
-    config_path    = local_file.kubeconfig.filename
-    config_context = "eks_streaming-kube-${terraform.workspace}"
+    host                   = data.terraform_remote_state.env_remote_state.outputs.eks_cluster_endpoint
+    cluster_ca_certificate = base64decode(data.terraform_remote_state.env_remote_state.outputs.eks_cluster_certificate_authority_data)
+    exec {
+      api_version = "client.authentication.k8s.io/v1alpha1"
+      args        = ["token", "-i", data.terraform_remote_state.env_remote_state.outputs.eks_cluster_name, "-r", var.eks_role_arn]
+      command     = "aws-iam-authenticator"
+    }
   }
 }
 
@@ -78,3 +78,7 @@ variable "recreate_pods" {
   default     = false
 }
 
+variable "eks_role_arn" {
+  description = "THe AWS ARN of the IAM role to access the EKS cluster"
+  default =  "arn:aws:iam::073132350570:role/jenkins_role"
+}
