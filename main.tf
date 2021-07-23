@@ -20,6 +20,7 @@ provider "helm" {
 
 resource "helm_release" "reaper" {
   name = "reaper"
+  debug = true
   repository = "https://Datastillery.github.io/charts"
   # The following line exists to quickly be commented out
   # for local development.
