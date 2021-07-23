@@ -19,13 +19,13 @@ provider "helm" {
 
 resource "helm_release" "reaper" {
   name = "reaper"
-  #repository = "https://Datastillery.github.io/charts"
+  repository = "https://Datastillery.github.io/charts"
   # The following line exists to quickly be commented out
   # for local development.
-  repository       = "../charts"
+  # repository       = "../charts"
   version          = "0.3.3"
   chart            = "reaper"
-  namespace        = "reaper"
+  namespace        = "streaming-services"
   create_namespace = true
   wait             = true
   recreate_pods    = var.recreate_pods
