@@ -13,7 +13,8 @@ resource "local_file" "kubeconfig" {
 provider "helm" {
   version = ">= 2.1"
   kubernetes {
-    config_path = local_file.kubeconfig.filename
+    config_path    = local_file.kubeconfig.filename
+    config_context = "eks_streaming-kube-${terraform.workspace}"
   }
 }
 
