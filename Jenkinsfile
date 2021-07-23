@@ -27,7 +27,7 @@ node ('infrastructure') {
             deployTo(
                 environment: 'dev',
                 extraVars: [
-                    'odo_tag': env.DEV_IMAGE_TAG,
+                    'reaper_tag': env.DEV_IMAGE_TAG,
                     'recreate_pods': true
                 ])        
         }
