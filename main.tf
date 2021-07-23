@@ -23,11 +23,12 @@ resource "helm_release" "urban_os" {
   # The following line exists to quickly be commented out
   # for local development.
   repository       = "../charts"
-  version          = "1.0.0"
+  version          = "0.3.3"
   chart            = "reaper"
   namespace        = "reaper"
   create_namespace = true
   wait             = true
+  recreate_pods    = var.recreate_pods
 
 
   values = [
@@ -71,5 +72,8 @@ variable "reaper_tag" {
   description = "This is the docker image tag of reaper"
 }
 
-
+variable "recreate_pods" {
+  description = "Force helm to recreate pods?"
+  default     = false
+}
 

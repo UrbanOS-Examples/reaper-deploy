@@ -24,7 +24,12 @@ node ('infrastructure') {
         scos.doCheckoutStage()
 
         doStageIfDeployingToDev('Deploy to Dev') {
-            deployTo(applicationName, 'dev', "--set image.tag=${env.DEV_IMAGE_TAG} --recreate-pods")
+            deployTo(
+                environment: 'dev',
+                extraVars: [
+                    'odo_tag': env.DEV_IMAGE_TAG,
+                    'recreate_pods': true
+                ])        
         }
 
         doStageIfMergedToMaster('Process Dev job') {
@@ -32,29 +37,25 @@ node ('infrastructure') {
         }
 
         doStageIfMergedToMaster('Deploy to Staging') {
-            deployTo(applicationName, 'staging')
+            deployTo(environment: 'staging')
             scos.applyAndPushGitHubTag('staging')
         }
 
         doStageIfRelease('Deploy to Production') {
-            deployTo(applicationName, 'prod')
+            deployTo(environment: 'prod')
             scos.applyAndPushGitHubTag('prod')
         }
     }
 }
 
-def deployTo(applicationName, environment, extraArgs = '') {
-    scos.withEksCredentials(environment) {
-        sh("""#!/bin/bash
-            set -e
-            helm repo add scdp https://datastillery.github.io/charts
-            helm repo update
-            helm upgrade --install ${applicationName} scdp/${applicationName} \
-                --version 0.3.3 \
-                --namespace=streaming-services \
-                --values=${applicationName}.yaml \
-                --set aws.hostedFileBucket=${environment}-hosted-dataset-files \
-                ${extraArgs}
-        """.trim())
+def deployTo(params = [:]) {
+    def environment = params.get('environment')
+    def extraVars = params.get('extraVars', [:])
+
+    def terraform = scos.terraform(environment)
+    sshagent(["GitHub"]) {
+        terraform.init()
     }
+    terraform.plan(terraform.defaultVarFile, extraVars)
+    terraform.apply()
 }
