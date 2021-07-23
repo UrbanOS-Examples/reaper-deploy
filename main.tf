@@ -7,6 +7,7 @@ terraform {
 
 provider "helm" {
   version = ">= 2.1"
+  debug = true
   kubernetes {
     host                   = data.terraform_remote_state.env_remote_state.outputs.eks_cluster_endpoint
     cluster_ca_certificate = base64decode(data.terraform_remote_state.env_remote_state.outputs.eks_cluster_certificate_authority_data)
@@ -20,7 +21,6 @@ provider "helm" {
 
 resource "helm_release" "reaper" {
   name = "reaper"
-  debug = true
   repository = "https://Datastillery.github.io/charts"
   # The following line exists to quickly be commented out
   # for local development.
