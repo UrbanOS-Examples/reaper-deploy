@@ -80,6 +80,5 @@ variable "recreate_pods" {
 }
 
 variable "eks_role_arn" {
-  description = "THe AWS ARN of the IAM role to access the EKS cluster"
-  default =  "arn:aws:iam::073132350570:role/jenkins_role"
+  description = "The AWS ARN of the IAM role to access the EKS cluster"
 }
