@@ -1,7 +1,10 @@
-replicaCount: 1
+global: 
+  kafka:
+    brokers: "streaming-service-kafka-bootstrap.streaming-prime:9092"
+  redis:
+    host: redis.external-services
 
-redis:
-  host: redis.external-services
+replicaCount: 1
 
 resources:
   limits:
