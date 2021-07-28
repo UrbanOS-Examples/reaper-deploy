@@ -59,12 +59,12 @@ resource "helm_release" "reaper" {
   }
 
   set_sensitive {
-    name = "reaper.aws.accessKeySecret"
+    name = "aws.accessKeySecret"
     value =  aws_iam_access_key.reaper.secret 
   }
 
   set_sensitive {
-    name = "reaper.aws.accessKeyId"
+    name = "aws.accessKeyId"
     value =  aws_iam_access_key.reaper.id
   }
 }
