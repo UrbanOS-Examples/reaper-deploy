@@ -1,3 +1,12 @@
+provider "aws" {
+  version = "~> 3.0"
+  region  = var.os_region
+
+  assume_role {
+    role_arn = var.os_role_arn
+  }
+}
+
 terraform {
   backend "s3" {
     key     = "reaper"
@@ -13,10 +22,18 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.terraform_remote_state.env_remote_state.outputs.eks_cluster_certificate_authority_data)
     exec {
       api_version = "client.authentication.k8s.io/v1alpha1"
-      args        = ["token", "-i", data.terraform_remote_state.env_remote_state.outputs.eks_cluster_name, "-r", var.eks_role_arn]
+      args        = [
+        "token", 
+        "-i", data.terraform_remote_state.env_remote_state.outputs.eks_cluster_name, 
+        "-r", var.os_role_arn
+      ]
       command     = "aws-iam-authenticator"
     }
   }
+}
+
+resource "aws_iam_access_key" "reaper" {
+  user = data.terraform_remote_state.env_remote_state.outputs.reaper_aws_user_name
 }
 
 resource "helm_release" "reaper" {
@@ -25,13 +42,12 @@ resource "helm_release" "reaper" {
   # The following line exists to quickly be commented out
   # for local development.
   # repository       = "../charts"
-  version          = "0.3.3"
+  version          = "1.1.0"
   chart            = "reaper"
   namespace        = "streaming-services"
   create_namespace = true
   wait             = true
   recreate_pods    = var.recreate_pods
-
 
   values = [
     file("${path.module}/reaper.yaml"),
@@ -40,7 +56,17 @@ resource "helm_release" "reaper" {
   set {
     name = "image.tag"
     value = var.reaper_tag
-  } 
+  }
+
+  set_sensitive {
+    name = "reaper.aws.accessKeySecret"
+    value =  aws_iam_access_key.reaper.secret 
+  }
+
+  set_sensitive {
+    name = "reaper.aws.accessKeyId"
+    value =  aws_iam_access_key.reaper.id
+  }
 }
 
 data "terraform_remote_state" "env_remote_state" {
@@ -79,6 +105,11 @@ variable "recreate_pods" {
   default     = false
 }
 
-variable "eks_role_arn" {
-  description = "The AWS ARN of the IAM role to access the EKS cluster"
+variable "os_region" {
+  description = "Region of OS resources"
+  default     = "us-west-2"
+}
+
+variable "os_role_arn" {
+  description = "The ARN for the assume role for OS access"
 }
