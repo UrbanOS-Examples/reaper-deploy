@@ -7,16 +7,6 @@ provider "aws" {
   }
 }
 
-provider "aws" {
-  version = "~> 3.0"
-  alias   = "alm"
-  region  = var.alm_region
-
-  assume_role {
-    role_arn = var.alm_role_arn
-  }
-}
-
 terraform {
   backend "s3" {
     key     = "reaper"
