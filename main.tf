@@ -38,7 +38,7 @@ resource "aws_iam_access_key" "reaper" {
 
 resource "helm_release" "reaper" {
   name = "reaper"
-  repository = "https://Datastillery.github.io/charts"
+  repository = "https://urbanos-public.github.io/charts/"
   # The following line exists to quickly be commented out
   # for local development.
   # repository       = "../charts"
